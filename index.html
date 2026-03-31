@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="game-wrapper">
+      <!-- Start Screen -->
+      <div id="start-screen" class="screen">
+        <h1 class="game-title">SNAKE</h1>
+        <p class="subtitle">Choose Difficulty</p>
+        <div class="difficulty-buttons">
+          <button class="btn btn-easy" data-difficulty="easy">Easy</button>
+          <button class="btn btn-medium" data-difficulty="medium">
+            Medium
+          </button>
+          <button class="btn btn-hard" data-difficulty="hard">Hard</button>
+        </div>
+        <p class="controls-hint">Use Arrow Keys or WASD to move</p>
+        <p class="controls-hint">Mobile: Swipe to move</p>
+      </div>
+
+      <!-- Game Screen -->
+      <div id="game-screen" class="screen hidden">
+        <div id="hud">
+          <div class="hud-item">
+            <span class="hud-label">Score</span>
+            <span id="score" class="hud-value">0</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">High Score</span>
+            <span id="high-score" class="hud-value">0</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">Level</span>
+            <span id="level" class="hud-value">Easy</span>
+          </div>
+        </div>
+        <canvas id="game-canvas"></canvas>
+      </div>
+
+      <!-- Game Over Screen -->
+      <div id="gameover-screen" class="screen hidden">
+        <h1 class="gameover-title">GAME OVER</h1>
+        <p id="final-score" class="final-score">Score: 0</p>
+        <p id="new-high" class="new-high hidden">New High Score!</p>
+        <div class="gameover-buttons">
+          <button class="btn btn-restart">Play Again</button>
+          <button class="btn btn-menu">Main Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
