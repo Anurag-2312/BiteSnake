@@ -1,10 +1,15 @@
 import { COLS, ROWS } from '../config.js';
 
-export class Fruit {
+export class BaseFruit {
     constructor() {
         this.x = 0;
         this.y = 0;
         this.pulse = 0;
+        this.type = 'apple';
+        this.scoreValue = 1;
+        this.spawnWeight = 10;
+        this.lifespan = Infinity;
+        this.ticksLeft = Infinity;
     }
 
     place(isOccupied) {
@@ -25,4 +30,7 @@ export class Fruit {
     isAt(x, y) {
         return this.x === x && this.y === y;
     }
+
+    // Override in subclasses for secondary effects
+    effect(_game) {}
 }

@@ -19,6 +19,7 @@
           </button>
           <button class="btn btn-hard" data-difficulty="hard">Hard</button>
         </div>
+        <button class="btn btn-leaderboard">Leaderboard</button>
         <p class="controls-hint">Use Arrow Keys or WASD to move</p>
         <p class="controls-hint">Mobile: Swipe to move</p>
       </div>
@@ -50,6 +51,33 @@
         <div class="gameover-buttons">
           <button class="btn btn-restart">Play Again</button>
           <button class="btn btn-menu">Main Menu</button>
+        </div>
+      </div>
+
+      <!-- Leaderboard Screen -->
+      <div id="leaderboard-screen" class="screen hidden">
+        <h1 class="game-title lb-title">TOP SCORES</h1>
+        <div class="lb-tabs">
+          <button class="lb-tab active" data-filter="easy">Easy</button>
+          <button class="lb-tab" data-filter="medium">Medium</button>
+          <button class="lb-tab" data-filter="hard">Hard</button>
+        </div>
+        <p id="lb-loading" class="lb-loading hidden">Loading...</p>
+        <p id="lb-empty" class="lb-loading hidden">No scores yet!</p>
+        <ol id="lb-list" class="lb-list"></ol>
+        <button class="btn btn-lb-back">Back</button>
+      </div>
+    </div>
+
+    <!-- Name Submit Modal -->
+    <div id="name-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <p class="modal-title">Submit Score</p>
+        <p class="modal-score">Score: <strong id="modal-score-val"></strong></p>
+        <input id="modal-name" type="text" maxlength="20" placeholder="Enter your name..." autocomplete="off" />
+        <div class="modal-btns">
+          <button id="btn-modal-submit" class="btn btn-easy">Submit</button>
+          <button id="btn-modal-skip" class="btn btn-menu">Skip</button>
         </div>
       </div>
     </div>

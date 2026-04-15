@@ -21,6 +21,7 @@ export class InputHandler {
 
     bindKeyboard() {
         document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             switch (e.key) {
                 case 'ArrowUp':    case 'w': case 'W':
                     this.emit('y', -1);

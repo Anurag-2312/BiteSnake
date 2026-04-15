@@ -127,8 +127,28 @@ export class Renderer {
 
   //Fruit
   drawFruit(fruit) {
-    const ctx = this.ctx;
     fruit.pulse += 0.08;
+
+    // Flash when under 30% lifespan remaining (special fruits only)
+    if (fruit.lifespan !== Infinity) {
+      const ratio = fruit.ticksLeft / fruit.lifespan;
+      if (ratio < 0.3) {
+        this.ctx.globalAlpha = 0.35 + 0.65 * Math.abs(Math.sin(fruit.pulse * 4));
+      }
+    }
+
+    switch (fruit.type) {
+      case 'golden': this.drawGolden(fruit); break;
+      case 'poison': this.drawPoison(fruit); break;
+      case 'cherry': this.drawCherry(fruit); break;
+      default:       this.drawApple(fruit);  break;
+    }
+
+    this.ctx.globalAlpha = 1;
+  }
+
+  drawApple(fruit) {
+    const ctx = this.ctx;
     const pulse = 1 + Math.sin(fruit.pulse) * 0.1;
     const cx = fruit.x * CELL_SIZE + CELL_SIZE / 2;
     const cy = fruit.y * CELL_SIZE + CELL_SIZE / 2;
@@ -164,6 +184,134 @@ export class Renderer {
     ctx.fillStyle = "#4caf50";
     ctx.beginPath();
     ctx.ellipse(cx + 5, cy - radius - 1, 4, 2, 0.3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  drawGolden(fruit) {
+    const ctx = this.ctx;
+    const pulse = 1 + Math.sin(fruit.pulse) * 0.12;
+    const cx = fruit.x * CELL_SIZE + CELL_SIZE / 2;
+    const cy = fruit.y * CELL_SIZE + CELL_SIZE / 2;
+    const radius = (CELL_SIZE / 2 - 2) * pulse;
+
+    ctx.shadowColor = "rgba(255, 215, 0, 0.85)";
+    ctx.shadowBlur = 18;
+
+    const grad = ctx.createRadialGradient(cx - 2, cy - 2, 1, cx, cy, radius);
+    grad.addColorStop(0, "#FFE066");
+    grad.addColorStop(0.6, "#FFC200");
+    grad.addColorStop(1, "#B8860B");
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+    ctx.beginPath();
+    ctx.arc(cx - 2, cy - 3, radius * 0.35, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 6-point star flick on top
+    ctx.fillStyle = "rgba(255, 255, 180, 0.9)";
+    ctx.save();
+    ctx.translate(cx, cy - radius - 3);
+    for (let i = 0; i < 6; i++) {
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(Math.cos((i * Math.PI) / 3) * 4, Math.sin((i * Math.PI) / 3) * 4);
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = "rgba(255, 255, 180, 0.9)";
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  drawPoison(fruit) {
+    const ctx = this.ctx;
+    const pulse = 1 + Math.sin(fruit.pulse) * 0.08;
+    const cx = fruit.x * CELL_SIZE + CELL_SIZE / 2;
+    const cy = fruit.y * CELL_SIZE + CELL_SIZE / 2;
+    const radius = (CELL_SIZE / 2 - 2) * pulse;
+
+    ctx.shadowColor = "rgba(140, 0, 255, 0.7)";
+    ctx.shadowBlur = 15;
+
+    const grad = ctx.createRadialGradient(cx - 2, cy - 2, 1, cx, cy, radius);
+    grad.addColorStop(0, "#bf5fff");
+    grad.addColorStop(0.6, "#7B00D4");
+    grad.addColorStop(1, "#4B0082");
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
+
+    // X mark in center
+    const xSize = radius * 0.4;
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cx - xSize, cy - xSize);
+    ctx.lineTo(cx + xSize, cy + xSize);
+    ctx.moveTo(cx + xSize, cy - xSize);
+    ctx.lineTo(cx - xSize, cy + xSize);
+    ctx.stroke();
+  }
+
+  drawCherry(fruit) {
+    const ctx = this.ctx;
+    const pulse = 1 + Math.sin(fruit.pulse) * 0.1;
+    const cx = fruit.x * CELL_SIZE + CELL_SIZE / 2;
+    const cy = fruit.y * CELL_SIZE + CELL_SIZE / 2;
+    const r = (CELL_SIZE / 2 - 4) * pulse;
+
+    // Y-shaped stem
+    ctx.strokeStyle = "#2d5a1e";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(cx - 4, cy + r);
+    ctx.quadraticCurveTo(cx - 4, cy - r * 0.5, cx, cy - r * 1.2);
+    ctx.moveTo(cx + 4, cy + r);
+    ctx.quadraticCurveTo(cx + 4, cy - r * 0.5, cx, cy - r * 1.2);
+    ctx.stroke();
+
+    // Left cherry
+    ctx.shadowColor = "rgba(220, 20, 60, 0.7)";
+    ctx.shadowBlur = 10;
+    const gradL = ctx.createRadialGradient(cx - 5 - 1, cy - 1, 1, cx - 5, cy, r);
+    gradL.addColorStop(0, "#FF6B6B");
+    gradL.addColorStop(0.7, "#CC0033");
+    gradL.addColorStop(1, "#8B0000");
+    ctx.fillStyle = gradL;
+    ctx.beginPath();
+    ctx.arc(cx - 5, cy, r, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Right cherry
+    const gradR = ctx.createRadialGradient(cx + 5 - 1, cy - 1, 1, cx + 5, cy, r);
+    gradR.addColorStop(0, "#FF6B6B");
+    gradR.addColorStop(0.7, "#CC0033");
+    gradR.addColorStop(1, "#8B0000");
+    ctx.fillStyle = gradR;
+    ctx.beginPath();
+    ctx.arc(cx + 5, cy, r, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
+
+    // Highlights
+    ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+    ctx.beginPath();
+    ctx.arc(cx - 6, cy - 1, r * 0.35, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx + 4, cy - 1, r * 0.35, 0, Math.PI * 2);
     ctx.fill();
   }
 
