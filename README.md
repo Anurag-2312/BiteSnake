@@ -74,12 +74,4 @@ Then open `http://localhost:8000` in your browser.
 
 ## Deployment
 
-This is a static site — deploy to any static hosting provider:
-
-- **Vercel**: Connect the GitHub repo and deploy with default settings
-- **Netlify**: Drag and drop the project folder or connect via GitHub
-- **GitHub Pages**: Enable in repo Settings > Pages
-
-## License
-
-MIT
+This is a static site. Connect the GitHub repo to [Vercel](https://vercel.com) and deploy with default settings.
