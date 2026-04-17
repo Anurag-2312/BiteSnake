@@ -11,13 +11,14 @@ body {
     align-items: center;
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 #game-wrapper {
     position: relative;
     width: 100%;
     max-width: 660px;
+    padding: 0 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -146,6 +147,8 @@ body {
     border-radius: 12px;
     box-shadow: 0 0 40px rgba(0, 255, 135, 0.08), 0 0 80px rgba(96, 239, 255, 0.05);
     display: block;
+    max-width: 100%;
+    height: auto;
 }
 
 /* Game Over Screen */
@@ -393,5 +396,19 @@ body {
 
     .hud-value {
         font-size: 1.1rem;
+    }
+
+    .difficulty-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .modal-box {
+        max-width: 90%;
+        min-width: unset;
+    }
+
+    .lb-list {
+        max-width: 100%;
     }
 }
